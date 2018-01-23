@@ -1,16 +1,21 @@
-ImageMixer imgA;
-ImageMixer imgB;
+ImageMixer imgs;
+int click = 0;
+
 
 void setup() {
   size(500, 500);
-  imgA = new ImageMixer("File_001.png");
-  imgB = new ImageMixer("File_003.jpeg");
+  imgs = new ImageMixer("File_001.png", "File_003.jpeg");
 }
 
 void draw() {
-  imgA.update();
-  imgB.update();
-  imgA.display();
-  imgB.display();
-  imgA.mixWith(imgB);
+    if (click == 1) {
+    imgs.mix();
+  }
+  imgs.update();
+  imgs.display();
+
+}
+
+void mousePressed(){
+ click = abs(click - 1) * 1;
 }
