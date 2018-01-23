@@ -1,9 +1,15 @@
 class ImageMixer {
   PImage img;
+  float r;
+  float g;
+  float b;
 
 
   ImageMixer(String _loc) {
     img = loadImage(_loc);
+    r = 0;
+    g = 0;
+    b = 0;
   }
 
   void update() {
@@ -11,16 +17,17 @@ class ImageMixer {
     for (int x = 0; x < img.width; x++) {
       for (int y = 0; y < img.height; y++) {
         int loc = x + y * img.width;
-        float r = red (img.pixels[loc]);
-        float g = green (img.pixels[loc]);
-        float b = blue (img.pixels[loc]);
+        r = red (img.pixels[loc]);
+        g = green (img.pixels[loc]);
+        b = blue (img.pixels[loc]);
       }
     }
     updatePixels();
   }
   
-  void mix(ImageMixer _img01, ImageMixer _img02){
+  void mixWith(ImageMixer _img02){
   
+   
   }
 
   void display() {
