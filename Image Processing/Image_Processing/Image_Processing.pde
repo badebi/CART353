@@ -1,12 +1,16 @@
-ImageMixer imageMixer;
-
+ImageMixer imgA;
+ImageMixer imgB;
 
 void setup() {
   size(500, 500);
-  imageMixer = new ImageMixer("File_001.png", "File_003.jpeg");
+  imgA = new ImageMixer("File_001.png");
+  imgB = new ImageMixer("File_003.jpeg");
 }
 
 void draw() {
-  imageMixer.update();
-  imageMixer.display();
+  imgA.update();
+  imgB.update();
+  imgA.display();
+  imgB.display();
+  imgA.mixWith(imgB);
 }
