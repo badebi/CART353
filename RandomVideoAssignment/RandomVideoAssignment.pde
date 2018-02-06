@@ -20,7 +20,7 @@ Ellipses[][] ellipses;
 float zoff, yoff, xoff;
 
 // Size of each cell in the grid
-int videoScale = 10;
+int videoScale = 5;
 // Number of columns and rows in our system
 int cols, rows;
 // Variable for capture device

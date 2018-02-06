@@ -22,6 +22,7 @@ class Ellipses {
 
     // Each rect is colored white with a size determined by brightness
     c = video.pixels[loc];
+    
 
     // A rectangle size is calculated as a function of the pixel's brightness. 
     // A bright pixel is a large rectangle, and a dark pixel is a small one.
@@ -40,7 +41,8 @@ class Ellipses {
     translate(x + videoScale/2, y + videoScale/2, z); 
 
     // set fill and stroke
-    fill(c);
+    fill(10,42,brightness(c));
+    
     noStroke();
 
     // use rectMode CENTER & rect to draw 
