@@ -40,15 +40,15 @@ void draw() {
   background(0);
   video.loadPixels();
   float xoff = 0.0;
-  
-    // 6 octaves, with each octave having 40% impact of the one immediately below it
+
+  // 15 octaves, with each octave having 60% impact of the one immediately below it
   noiseDetail(15, 0.6);
 
   // Begin loop for columns
   for (int i = 0; i < cols; i++) {
-    
-      float yoff = 0.0;
-    
+
+    float yoff = 0.0;
+
     // Begin loop for rows
     for (int j = 0; j < rows; j++) {
 
@@ -66,20 +66,23 @@ void draw() {
 
       // A rectangle size is calculated as a function of the pixel's brightness. 
       // A bright pixel is a large rectangle, and a dark pixel is a small one.
+      
+      //CHANGED I added noise() here so the ellipses move back and forth and it's no longer 
+      //directly related to the brightness level
       float sz = map(noise(xoff, yoff, zoff), 0, 1, 0, (brightness(c)/255)*videoScale); 
 
       /*
       // here I want to make an condition to avoid the program to go to the matrix when the pixels are not in
-      // the range of Gaussian distribution ... In the other words, I just want to draw the pixels based on the
-      // Gaussian distribution in each frame, and ignore drawing the other ones.
-      float sd = 45;
-      float xMean = width/2;
-      float yMean = height/2;
-      x2 = (float)generator.nextGaussian() * sd + xMean;
-      y2 = (float)generator.nextGaussian() * sd + yMean;
-      
-      
-      */
+       // the range of Gaussian distribution ... In the other words, I just want to draw the pixels based on the
+       // Gaussian distribution in each frame, and ignore drawing the other ones.
+       float sd = 45;
+       float xMean = width/2;
+       float yMean = height/2;
+       x2 = (float)generator.nextGaussian() * sd + xMean;
+       y2 = (float)generator.nextGaussian() * sd + yMean;
+       
+       
+       */
       // use pushMatrix() and translate() to change (simplify) our drawing origin      
       pushMatrix();
       float z = map(brightness(c), 0, 255, -100, 100);
@@ -97,13 +100,11 @@ void draw() {
       // popMatrix() to reset our drawing origin to (0, 0)
       popMatrix();
       yoff += 0.01;
-      
-
     }
     xoff += 0.01;
   }
-   updatePixels();
-  
+  updatePixels();
+
   // update zoff once per draw cycle
   zoff += 0.03;
 }
