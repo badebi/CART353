@@ -9,10 +9,12 @@
 import processing.video.*;
 import java.util.*;
 
-//float x2, y2;
+float x2, y2;
+
+Ellipses[][] ellipses;
 
 Random generator;
-float zoff;
+float zoff, yoff, xoff;
 // Size of each cell in the grid
 int videoScale = 10;
 // Number of columns and rows in our system
@@ -29,6 +31,14 @@ void setup() {
   video = new Capture(this, cols, rows);
   video.start();
   generator = new Random();
+
+  ellipses = new Ellipses[cols][rows];
+
+  for (int i = 0; i < cols; i++) {
+    for (int j = 0; j < rows; j++) {
+      ellipses[i][j] = new Ellipses(i, j);
+    }
+  }
 }
 
 void captureEvent(Capture video) {
@@ -39,7 +49,7 @@ void captureEvent(Capture video) {
 void draw() {
   background(0);
   video.loadPixels();
-  float xoff = 0.0;
+  xoff = 0.0;
 
   // 15 octaves, with each octave having 60% impact of the one immediately below it
   noiseDetail(15, 0.6);
@@ -47,61 +57,33 @@ void draw() {
   // Begin loop for columns
   for (int i = 0; i < cols; i++) {
 
-    float yoff = 0.0;
+    yoff = 1000.0;
 
     // Begin loop for rows
     for (int j = 0; j < rows; j++) {
 
-      // Where are we, pixel-wise?
-      int x = i * videoScale;
-      int y = j * videoScale;
+      ellipses[i][j].update(); 
+      //ellipses[i][j].display(); 
 
-      // Reversing x to mirror the image
-      // In order to mirror the image, the column is reversed with the following formula:
-      // mirrored column = width - i - 1
-      int loc = (video.width - i - 1) + j*video.width;
-
-      // Each rect is colored white with a size determined by brightness
-      color c = video.pixels[loc];
-
-      // A rectangle size is calculated as a function of the pixel's brightness. 
-      // A bright pixel is a large rectangle, and a dark pixel is a small one.
-      
-      //CHANGED I added noise() here so the ellipses move back and forth and it's no longer 
-      //directly related to the brightness level
-      float sz = map(noise(xoff, yoff, zoff), 0, 1, 0, (brightness(c)/255)*videoScale); 
-
-      /*
-      // here I want to make an condition to avoid the program to go to the matrix when the pixels are not in
-       // the range of Gaussian distribution ... In the other words, I just want to draw the pixels based on the
-       // Gaussian distribution in each frame, and ignore drawing the other ones.
-       float sd = 45;
-       float xMean = width/2;
-       float yMean = height/2;
-       x2 = (float)generator.nextGaussian() * sd + xMean;
-       y2 = (float)generator.nextGaussian() * sd + yMean;
-       
-       
-       */
-      // use pushMatrix() and translate() to change (simplify) our drawing origin      
-      pushMatrix();
-      float z = map(brightness(c), 0, 255, -100, 100);
-
-      translate(x + videoScale/2, y + videoScale/2, z); 
-
-      // set fill and stroke
-      fill(c);
-      noStroke();
-
-      // use rectMode CENTER & rect to draw 
-      ellipseMode(CENTER);
-      ellipse(0, 0, sz, sz);
-
-      // popMatrix() to reset our drawing origin to (0, 0)
-      popMatrix();
       yoff += 0.01;
     }
     xoff += 0.01;
+  }
+
+  for (int i = 0; i < cols; i++) {
+    for (int j = 0; j < rows; j++) {
+      // here I want to make an condition to avoid the program to go to the matrix when the pixels are not in
+      // the range of Gaussian distribution ... In the other words, I just want to draw the pixels based on the
+      // Gaussian distribution in each frame, and ignore drawing the other ones.
+      float sd = 36;
+      float xMean = width/2;
+      float yMean = height/2;
+      x2 = (float)generator.nextGaussian() * sd + xMean;
+      y2 = (float)generator.nextGaussian() * sd + yMean;
+      
+
+      ellipses[(int)(x2 / videoScale)][(int)(y2 / videoScale)].display();
+    }
   }
   updatePixels();
 
