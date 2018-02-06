@@ -9,12 +9,16 @@
 import processing.video.*;
 import java.util.*;
 
+// variables for doing a Gaussian distribution
 float x2, y2;
+Random generator;
 
+// a 2D array of Ellipses
 Ellipses[][] ellipses;
 
-Random generator;
+// variables for applying noise()
 float zoff, yoff, xoff;
+
 // Size of each cell in the grid
 int videoScale = 10;
 // Number of columns and rows in our system
@@ -75,12 +79,13 @@ void draw() {
       // here I want to make an condition to avoid the program to go to the matrix when the pixels are not in
       // the range of Gaussian distribution ... In the other words, I just want to draw the pixels based on the
       // Gaussian distribution in each frame, and ignore drawing the other ones.
+      // For the accuracy, I applied the Gaussian distribution to the pixels and then I scaled it down to rows and cols
       float sd = 36;
       float xMean = width/2;
       float yMean = height/2;
       x2 = (float)generator.nextGaussian() * sd + xMean;
       y2 = (float)generator.nextGaussian() * sd + yMean;
-      
+
 
       ellipses[(int)(x2 / videoScale)][(int)(y2 / videoScale)].display();
     }

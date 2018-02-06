@@ -28,14 +28,14 @@ class Ellipses {
 
     //CHANGED I added noise() here so the ellipses move back and forth and it's no longer 
     //directly related to the brightness level
-    sz = map(noise(xoff*4, yoff+5, zoff), 0, 1, 0, (brightness(c)/255)*videoScale);
+    //I also changed the way it maps for the better look : (brightness(c)/255) * videoScale -> (brightness(c)/200) * videoScale
+    sz = map(noise(xoff*4, yoff+5, zoff), 0, 1, 0, (brightness(c)/200) * videoScale);
   }
 
   void display() {
-
     // use pushMatrix() and translate() to change (simplify) our drawing origin      
     pushMatrix();
-    float z = map(brightness(c), 0, 255, -100, 100);
+    float z = map(brightness(c), 0, 200, -100, 100);
 
     translate(x + videoScale/2, y + videoScale/2, z); 
 
